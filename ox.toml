@@ -28,7 +28,7 @@ api_paths = ["/api", "/health"]
 
 [[domains]]
 name = "react-django.oxzoo.sorv.dev"
-tls = false
+tls = true
 spa = true
 
 # Node 22 for the vite build (external apt repo, applied before packages).
