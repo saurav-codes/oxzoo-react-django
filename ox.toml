@@ -1,0 +1,40 @@
+# ox deploy example: Django 5.2 API + Vite/React SPA.
+# nginx serves dist/ (spa = true) and proxies the api_paths prefixes to gunicorn.
+
+name = "oxzoo-react-django"
+branch = "main"
+runtime = "python"
+framework = "django"
+package_manager = "uv"
+port = 9107
+environment_file = "/etc/ox/apps/oxzoo-react-django.env"
+required_packages = ["nodejs"]
+
+[[processes]]
+name = "web"
+command = "uv run gunicorn hello.wsgi:application --bind 127.0.0.1:{port} --workers 2"
+readiness = "http://127.0.0.1:{port}/health"
+
+[deploy]
+# Hook lines run as the unprivileged project user: installs stay inside the
+# release (.venv and node_modules), never global.
+install = ["uv sync --frozen", "npm install"]
+build = ["npm", "run", "build"]
+health_url = "http://127.0.0.1:9107/health"
+
+[frontend]
+dist = "dist"
+api_paths = ["/api", "/health"]
+
+[[domains]]
+name = "react-django.oxzoo.sorv.dev"
+tls = false
+spa = true
+
+# Node 22 for the vite build (external apt repo, applied before packages).
+[[apt_sources]]
+name = "nodesource"
+url = "https://deb.nodesource.com/node_22.x"
+suite = "nodistro"
+components = ["main"]
+key_url = "https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key"
