@@ -7,7 +7,7 @@ runtime = "python"
 framework = "django"
 package_manager = "uv"
 port = 9107
-environment_file = "/etc/ox/apps/oxzoo-react-django.env"
+environment_file = "/etc/ox/projects/oxzoo-react-django.env"
 required_packages = ["nodejs"]
 
 [[processes]]
