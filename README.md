@@ -19,7 +19,7 @@ Official ox deploy example: a Django 5.2 LTS API behind gunicorn with a React 18
 
 ## Deploy with ox
 
-1. In the ox dashboard, create a project from the clone URL: `https://github.com/saurav-codes/oxzoo-react-django.git`
+1. In the ox dashboard, create a project from the clone URL: `git@github.com:saurav-codes/oxzoo-react-django.git`
 2. **Before the first deploy**, set `GREETING_TAG` (and `DJANGO_SECRET_KEY`) in the project's Environment editor. The build hook bakes `GREETING_TAG` into the SPA, so it must exist before the first deploy.
 3. Press **Deploy**. ox runs `uv sync --frozen` and `npm install` (release-local installs), `npm run build`, starts the `web` process (`uv run gunicorn hello.wsgi:application` on `127.0.0.1:9107`), and polls `http://127.0.0.1:9107/health` before switching traffic.
 
