@@ -1,38 +1,16 @@
-# ox deploy example: Django 5.2 API + Vite/React SPA.
-# nginx serves dist/ (spa = true) and proxies the api_paths prefixes to gunicorn.
+# Django API on gunicorn (uv) + React SPA (npm) in one repo.
 
-name = "oxzoo-react-django"
-branch = "main"
-runtime = "python"
-package_manager = "uv"
-port = 9107
-required_packages = ["nodejs"]
+[app]
+start  = "uv run gunicorn hello.wsgi:application --bind 127.0.0.1:$PORT --workers 2"
+health = "/health"
 
-[[processes]]
-name = "web"
-command = "uv run gunicorn hello.wsgi:application --bind 127.0.0.1:{port} --workers 2"
-readiness = "http://127.0.0.1:{port}/health"
-
-[deploy]
-# Hook lines run as the unprivileged project user: installs stay inside the
-# release (.venv and node_modules), never global.
-install = ["uv sync --frozen", "npm install"]
-build = ["npm", "run", "build"]
-health_url = "http://127.0.0.1:9107/health"
-
-[frontend]
-dist = "dist"
-api_paths = ["/api", "/health"]
-
-[[domains]]
-name = "react-django.oxzoo.sorv.dev"
-tls = true
+[static]
+dir = "dist"
 spa = true
+api = ["/api", "/health"]
 
-# Node 22 for the vite build (external apt repo, applied before packages).
-[[apt_sources]]
-name = "nodesource"
-url = "https://deb.nodesource.com/node_22.x"
-suite = "nodistro"
-components = ["main"]
-key_url = "https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key"
+[build]
+commands = ["uv sync --frozen --no-dev", "npm run build"]
+
+[tools]
+node = "24"

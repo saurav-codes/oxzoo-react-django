@@ -1,7 +1,7 @@
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 
-// root is client/; the build lands in ../dist, which ox's [frontend].dist serves.
+// root is client/; the build lands in ../dist, which ox serves from [static] dir.
 export default defineConfig({
   root: "client",
   plugins: [react()],
