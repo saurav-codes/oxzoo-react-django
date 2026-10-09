@@ -1,5 +1,7 @@
 # oxzoo-react-django
 
+Deployed with [ox](https://deploywithox.com): deploy a repo to your own server with one command, no Docker. [Docs](https://deploywithox.com/docs) · [Guide for this stack](https://deploywithox.com/docs/guides/django)
+
 Official ox deploy example: a Django 5.2 LTS API behind gunicorn with a React 18 SPA built by Vite, deployed to one Ubuntu VPS from a single `ox.toml` at the repo root. nginx serves the built frontend and proxies the API paths to a systemd-managed gunicorn process; ox runs every install/build hook as the unprivileged project user and switches traffic only after the health check passes.
 
 ## Stack
